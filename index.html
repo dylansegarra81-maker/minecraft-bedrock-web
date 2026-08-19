@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bedrock Zone</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+        }
+
+        header {
+            background: #1f1f1f;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #39ff14;
+        }
+
+        header h1 {
+            font-size: 32px;
+        }
+
+        header p {
+            color: #aaa;
+            margin-top: 8px;
+        }
+
+        nav {
+            padding: 15px;
+            text-align: center;
+            background: #181818;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #39ff14;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 70px 20px;
+            background: linear-gradient(135deg, #151515, #222);
+        }
+
+        .hero h2 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: #bbb;
+            font-size: 18px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 14px 25px;
+            background: #39ff14;
+            color: #000;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .articles {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .articles h2 {
+            margin-bottom: 25px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #1c1c1c;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #333;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #aaa;
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #181818;
+            color: #777;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>⛏️ Bedrock Zone</h1>
+        <p>Guías, semillas y trucos de Minecraft Bedrock</p>
+    </header>
+
+    <nav>
+        <a href="#">Inicio</a>
+        <a href="#">Semillas</a>
+        <a href="#">Guías</a>
+        <a href="#">Encantamientos</a>
+        <a href="#">Comandos</a>
+    </nav>
+
+    <section class="hero">
+        <h2>Minecraft Bedrock</h2>
+        <p>
+            Encuentra las mejores semillas, coordenadas,
+            guías y trucos para mejorar tu mundo.
+        </p>
+
+        <a href="#guias" class="button">Ver guías</a>
+    </section>
+
+    <section class="articles" id="guias">
+        <h2>🔥 Últimas guías</h2>
+
+        <div class="grid">
+
+            <div class="card">
+                <h3>🌱 Mejores semillas</h3>
+                <p>
+                    Descubre semillas increíbles para
+                    Minecraft Bedrock.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>⚔️ Encantamientos</h3>
+                <p>
+                    Aprende cuáles son los mejores
+                    encantamientos para tus herramientas.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>🏘️ Aldeas</h3>
+                <p>
+                    Encuentra aldeas y descubre
+                    coordenadas útiles.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        © 2026 Bedrock Zone — Guías de Minecraft Bedrock
+    </footer>
+
+</body>
+</html>
