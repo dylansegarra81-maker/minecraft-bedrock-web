@@ -428,16 +428,6 @@
     box-shadow: var(--shadow-md);
     aspect-ratio: 4/5;
   }
-  .hero-art .frame img{
-    width:100%; height:100%; object-fit:cover;
-    transform: scale(1.02);
-  }
-  .hero-art .frame::after{
-    content:'';
-    position:absolute; inset:0;
-    background: linear-gradient(180deg, transparent 45%, rgba(11,12,14,.85) 100%);
-    pointer-events:none;
-  }
 
   /* ============================================================
      HERO CAROUSEL (banner dinámico de semillas/mundos)
@@ -453,9 +443,10 @@
     opacity:0;
     visibility:hidden;
     transition: opacity .8s var(--ease);
-    /* Fondo de respaldo por si una imagen tarda en cargar o falla:
-       así ninguna diapositiva se ve blanca/vacía. */
-    background: linear-gradient(155deg, #163326 0%, #2f8a56 55%, #0e2318 100%);
+    /* Fondo neutro simple mientras no haya imagen propia colocada
+       en imagenes/carrusel-N.jpg — sin degradados ni colores de
+       demostración, solo un panel oscuro liso del propio tema. */
+    background: var(--panel-2);
   }
   .carousel-slide.is-active{
     opacity:1;
@@ -566,36 +557,11 @@
     .carousel-arrow{ width:30px; height:30px; font-size:16px; }
   }
 
-  .hero-art .float-card{
-    position:absolute;
-    background: rgba(20,22,26,.9);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-m);
-    padding: 14px 16px;
-    box-shadow: var(--shadow-md);
-    display:flex;
-    align-items:center;
-    gap: 10px;
-    animation: floaty 5s ease-in-out infinite;
-  }
-  .hero-art .float-card.a{ top: 8%; left: -6%; }
-  .hero-art .float-card.b{ bottom: 10%; right: -7%; animation-delay: .8s; }
-  .hero-art .float-card .dot{ width:8px; height:8px; border-radius:2px; background: var(--moss); flex-shrink:0; }
-  .hero-art .float-card strong{ display:block; font-size:13.5px; font-weight:600; }
-  .hero-art .float-card span{ font-size:11.5px; color: var(--text-faint); font-family: var(--font-mono); }
-
-  @keyframes floaty{
-    0%,100%{ transform: translateY(0); }
-    50%{ transform: translateY(-10px); }
-  }
-
   @media (max-width: 940px){
     .hero .wrap{ grid-template-columns: 1fr; }
     .hero-art{ order:-1; max-width: 380px; margin-inline:auto; }
     .hero p.lead{ max-width: none; }
     .hero-stats{ flex-wrap:wrap; row-gap:16px; }
-    .hero-art .float-card{ display:none; }
   }
 
   /* ============================================================
@@ -948,8 +914,8 @@
       <a href="#inicio" class="active">Inicio</a>
       <a href="semillas.html">Semillas</a>
       <a href="#guias">Guías</a>
-      <a href="#encantamientos">Encantamientos</a>
-      <a href="#comandos">Comandos</a>
+      <a href="#guias">Encantamientos</a>
+      <a href="#guias">Comandos</a>
     </nav>
 
     <div class="nav-actions">
@@ -974,8 +940,8 @@
       <a href="#inicio">Inicio</a>
       <a href="semillas.html">Semillas</a>
       <a href="#guias">Guías</a>
-      <a href="#encantamientos">Encantamientos</a>
-      <a href="#comandos">Comandos</a>
+      <a href="#guias">Encantamientos</a>
+      <a href="#guias">Comandos</a>
     </div>
   </div>
 </header>
@@ -1009,7 +975,7 @@
         <div class="carousel-track" id="carouselTrack">
 
           <div class="carousel-slide is-active" data-slide="0">
-            <img class="carousel-slide-img" alt="Bosque frondoso con terreno variado" loading="eager" src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?q=80&w=1200&auto=format&fit=crop">
+            <img class="carousel-slide-img" alt="Nuevas semillas disponibles" loading="eager" src="imagenes/carrusel-1.jpg">
             <div class="carousel-overlay"></div>
             <span class="carousel-icon">✨</span>
             <div class="carousel-copy">
@@ -1019,7 +985,7 @@
           </div>
 
           <div class="carousel-slide" data-slide="1">
-            <img class="carousel-slide-img" alt="Paisaje de montañas y naturaleza" loading="lazy" src="https://images.unsplash.com/photo-1607513746994-51f730a44832?q=80&w=1200&auto=format&fit=crop">
+            <img class="carousel-slide-img" alt="Semillas destacadas" loading="lazy" src="imagenes/carrusel-2.jpg">
             <div class="carousel-overlay"></div>
             <span class="carousel-icon">🔥</span>
             <div class="carousel-copy">
@@ -1029,7 +995,7 @@
           </div>
 
           <div class="carousel-slide" data-slide="2">
-            <img class="carousel-slide-img" alt="Cueva con estructuras y antorchas" loading="lazy" src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=1200&auto=format&fit=crop">
+            <img class="carousel-slide-img" alt="Explora nuevos mundos" loading="lazy" src="imagenes/carrusel-3.jpg">
             <div class="carousel-overlay"></div>
             <span class="carousel-icon">🌍</span>
             <div class="carousel-copy">
@@ -1039,7 +1005,7 @@
           </div>
 
           <div class="carousel-slide" data-slide="3">
-            <img class="carousel-slide-img" alt="Escena moderna con luces" loading="lazy" src="https://images.unsplash.com/photo-1614854262340-ab1ca7d079c7?q=80&w=1200&auto=format&fit=crop">
+            <img class="carousel-slide-img" alt="Actualizado" loading="lazy" src="imagenes/carrusel-4.jpg">
             <div class="carousel-overlay"></div>
             <span class="carousel-icon">⚡</span>
             <div class="carousel-copy">
@@ -1049,7 +1015,7 @@
           </div>
 
           <div class="carousel-slide" data-slide="4">
-            <img class="carousel-slide-img" alt="Aventurero listo para explorar" loading="lazy" src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1200&auto=format&fit=crop">
+            <img class="carousel-slide-img" alt="Empieza tu aventura" loading="lazy" src="imagenes/carrusel-5.jpg">
             <div class="carousel-overlay"></div>
             <span class="carousel-icon">🌱</span>
             <div class="carousel-copy">
@@ -1059,7 +1025,7 @@
           </div>
 
           <div class="carousel-slide" data-slide="5">
-            <img class="carousel-slide-img" alt="Escena nocturna con luces intensas" loading="lazy" src="https://images.unsplash.com/photo-1633613286991-611fe299c4be?q=80&w=1200&auto=format&fit=crop">
+            <img class="carousel-slide-img" alt="Encuentra el mundo perfecto" loading="lazy" src="imagenes/carrusel-6.jpg">
             <div class="carousel-overlay"></div>
             <span class="carousel-icon">💎</span>
             <div class="carousel-copy">
@@ -1069,7 +1035,7 @@
           </div>
 
           <div class="carousel-slide" data-slide="6">
-            <img class="carousel-slide-img" alt="Paisaje espectacular con luz brillante" loading="lazy" src="https://images.unsplash.com/photo-1642184749291-4318e70eb4c1?q=80&w=1200&auto=format&fit=crop">
+            <img class="carousel-slide-img" alt="Descubre paisajes increíbles" loading="lazy" src="imagenes/carrusel-7.jpg">
             <div class="carousel-overlay"></div>
             <span class="carousel-icon">🏔️</span>
             <div class="carousel-copy">
@@ -1079,7 +1045,7 @@
           </div>
 
           <div class="carousel-slide" data-slide="7">
-            <img class="carousel-slide-img" alt="Bosque para explorar" loading="lazy" src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?q=80&w=1200&auto=format&fit=crop">
+            <img class="carousel-slide-img" alt="Explora. Descubre. Sobrevive." loading="lazy" src="imagenes/carrusel-8.jpg">
             <div class="carousel-overlay"></div>
             <span class="carousel-icon">🧭</span>
             <div class="carousel-copy">
@@ -1089,7 +1055,7 @@
           </div>
 
           <div class="carousel-slide" data-slide="8">
-            <img class="carousel-slide-img" alt="Paisaje popular entre la comunidad" loading="lazy" src="https://images.unsplash.com/photo-1607513746994-51f730a44832?q=80&w=1200&auto=format&fit=crop">
+            <img class="carousel-slide-img" alt="Semillas populares" loading="lazy" src="imagenes/carrusel-9.jpg">
             <div class="carousel-overlay"></div>
             <span class="carousel-icon">⭐</span>
             <div class="carousel-copy">
@@ -1099,7 +1065,7 @@
           </div>
 
           <div class="carousel-slide" data-slide="9">
-            <img class="carousel-slide-img" alt="Estructura y paisaje épico" loading="lazy" src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=1200&auto=format&fit=crop">
+            <img class="carousel-slide-img" alt="Tu próximo mundo empieza aquí" loading="lazy" src="imagenes/carrusel-10.jpg">
             <div class="carousel-overlay"></div>
             <span class="carousel-icon">🗺️</span>
             <div class="carousel-copy">
@@ -1125,14 +1091,6 @@
           <button class="carousel-dot" type="button" data-slide="8" role="tab" aria-selected="false" aria-label="Diapositiva 9"></button>
           <button class="carousel-dot" type="button" data-slide="9" role="tab" aria-selected="false" aria-label="Diapositiva 10"></button>
         </div>
-      </div>
-      <div class="float-card a">
-        <span class="dot"></span>
-        <div><strong>Nueva semilla</strong><span>Aldea + Fortaleza</span></div>
-      </div>
-      <div class="float-card b">
-        <span class="dot"></span>
-        <div><strong>Seed copiada</strong><span>-4823019582</span></div>
       </div>
     </div>
   </div>
@@ -1164,7 +1122,7 @@
         <p>Ubicaciones, comerciantes y estrategias para aprovechar cada aldea.</p>
         <span class="go">Ver más →</span>
       </a>
-      <a href="#encantamientos" class="cat-card reveal">
+      <a href="#guias" class="cat-card reveal">
         <div class="cat-icon">⚔️</div>
         <h3>Encantamientos</h3>
         <p>Combinaciones óptimas para armas, armaduras y herramientas.</p>
@@ -1182,7 +1140,7 @@
         <p>Fortalezas, templos, portales y monumentos, con coordenadas exactas.</p>
         <span class="go">Ver más →</span>
       </a>
-      <a href="#comandos" class="cat-card reveal">
+      <a href="#guias" class="cat-card reveal">
         <div class="cat-icon">⌨️</div>
         <h3>Comandos</h3>
         <p>Comandos esenciales de Bedrock con ejemplos listos para copiar.</p>
@@ -1328,7 +1286,7 @@
 
       <div class="footer-col">
         <h4>Recursos</h4>
-        <a href="#encantamientos">Encantamientos</a>
+        <a href="#guias">Encantamientos</a>
         <a href="#guias">Comandos</a>
         <a href="#">Contacto</a>
       </div>
@@ -1359,20 +1317,23 @@
      Este array es el único lugar que necesitas tocar para
      reemplazar las imágenes del carrusel. El orden corresponde
      exactamente a las 10 diapositivas (1 a 10) tal como aparecen
-     en el HTML. Pon aquí la URL o ruta de tu propia imagen y se
-     aplicará automáticamente a esa diapositiva.
+     en el HTML. Ya está apuntando a tu propia carpeta imagenes/ —
+     solo coloca ahí tus 10 archivos con estos mismos nombres
+     (carrusel-1.jpg ... carrusel-10.jpg) y aparecerán automática-
+     mente. Mientras un archivo no exista, esa diapositiva muestra
+     un panel oscuro neutro (sin imágenes de demostración).
      ============================================================ */
   const CAROUSEL_IMAGES = [
-    'https://images.unsplash.com/photo-1518709268805-4e9042af2176?q=80&w=1200&auto=format&fit=crop', // 1. Nuevas semillas disponibles
-    'https://images.unsplash.com/photo-1607513746994-51f730a44832?q=80&w=1200&auto=format&fit=crop', // 2. Semillas destacadas
-    'https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=1200&auto=format&fit=crop', // 3. Explora nuevos mundos
-    'https://images.unsplash.com/photo-1614854262340-ab1ca7d079c7?q=80&w=1200&auto=format&fit=crop', // 4. Actualizado
-    'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1200&auto=format&fit=crop', // 5. Empieza tu aventura
-    'https://images.unsplash.com/photo-1633613286991-611fe299c4be?q=80&w=1200&auto=format&fit=crop', // 6. Encuentra el mundo perfecto
-    'https://images.unsplash.com/photo-1642184749291-4318e70eb4c1?q=80&w=1200&auto=format&fit=crop', // 7. Descubre paisajes increíbles
-    'https://images.unsplash.com/photo-1518709268805-4e9042af2176?q=80&w=1200&auto=format&fit=crop', // 8. Explora. Descubre. Sobrevive.
-    'https://images.unsplash.com/photo-1607513746994-51f730a44832?q=80&w=1200&auto=format&fit=crop', // 9. Semillas populares
-    'https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=1200&auto=format&fit=crop'  // 10. Tu próximo mundo empieza aquí
+    'imagenes/carrusel-1.jpg',  // 1. Nuevas semillas disponibles
+    'imagenes/carrusel-2.jpg',  // 2. Semillas destacadas
+    'imagenes/carrusel-3.jpg',  // 3. Explora nuevos mundos
+    'imagenes/carrusel-4.jpg',  // 4. Actualizado
+    'imagenes/carrusel-5.jpg',  // 5. Empieza tu aventura
+    'imagenes/carrusel-6.jpg',  // 6. Encuentra el mundo perfecto
+    'imagenes/carrusel-7.jpg',  // 7. Descubre paisajes increíbles
+    'imagenes/carrusel-8.jpg',  // 8. Explora. Descubre. Sobrevive.
+    'imagenes/carrusel-9.jpg',  // 9. Semillas populares
+    'imagenes/carrusel-10.jpg'  // 10. Tu próximo mundo empieza aquí
   ];
 
   /* Red de seguridad adicional para el scroll (la causa raíz ya
