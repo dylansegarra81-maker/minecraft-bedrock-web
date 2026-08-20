@@ -2,6 +2,22 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<script>
+  /* ============================================================
+     CORRECCIÓN DE SCROLL AL CARGAR — causa raíz
+     ------------------------------------------------------------
+     El navegador salta de forma NATIVA a un elemento cuyo id
+     coincide con el #hash de la URL durante el PARSEO del HTML,
+     antes de que se ejecute cualquier <script> al final del
+     <body>. Por eso la corrección debe ir aquí, en el primer
+     script del <head>, quitando el hash ANTES de que el navegador
+     llegue a parsear el elemento destino.
+     ============================================================ */
+  if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+  if (window.location.hash) {
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bedrock Zone — Guías, Semillas y Trucos de Minecraft Bedrock</title>
 <meta name="description" content="Descubre las mejores semillas, guías, coordenadas, encantamientos y trucos para Minecraft Bedrock.">
@@ -437,6 +453,9 @@
     opacity:0;
     visibility:hidden;
     transition: opacity .8s var(--ease);
+    /* Fondo de respaldo por si una imagen tarda en cargar o falla:
+       así ninguna diapositiva se ve blanca/vacía. */
+    background: linear-gradient(155deg, #163326 0%, #2f8a56 55%, #0e2318 100%);
   }
   .carousel-slide.is-active{
     opacity:1;
@@ -444,40 +463,32 @@
     z-index:1;
   }
 
-  .carousel-bg{
+  /* Imagen real de cada diapositiva. Se usa un <img> normal (no
+     background-image + mix-blend-mode) para máxima compatibilidad,
+     incluido Safari en iPhone. */
+  .carousel-slide-img{
     position:absolute; inset:0;
-    background-size: cover;
-    background-position: center;
-  }
-  .carousel-bg::after{
-    content:'';
-    position:absolute; inset:0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
-    background-size: 26px 26px;
-    mix-blend-mode: overlay;
-    opacity:.55;
+    width:100%; height:100%;
+    object-fit: cover;
+    object-position: center;
+    display:block;
   }
 
-  .slide-bg-1{ background-image: linear-gradient(155deg, #163326 0%, #2f8a56 48%, #0e2318 100%); }
-  .slide-bg-2{ background-image: linear-gradient(155deg, #14262f 0%, #2c6a7d 48%, #0d1b21 100%); }
-  .slide-bg-3{ background-image: linear-gradient(155deg, #2f8a56 0%, #b8873a 55%, #1c3b4d 100%); }
-  .slide-bg-4{ background-image: linear-gradient(155deg, #3a2e12 0%, #b8873a 48%, #1c1f24 100%); }
-  .slide-bg-5{ background-image: linear-gradient(155deg, #4a1f1f 0%, #b8873a 45%, #241436 100%); }
-  .slide-bg-6{ background-image: linear-gradient(155deg, #123a2c 0%, #2f8a56 48%, #0f2027 100%); }
-  .slide-bg-7{ background-image: linear-gradient(155deg, #1e2a33 0%, #3d5a6c 48%, #0b0c0e 100%); }
-  .slide-bg-8{ background-image: linear-gradient(155deg, #3a1f2e 0%, #c98a4a 45%, #1a1030 100%); }
-  .slide-bg-9{ background-image: linear-gradient(155deg, #3a2a12 0%, #8a5a2f 48%, #1c1410 100%); }
-  .slide-bg-10{ background-image: linear-gradient(155deg, #0f2027 0%, #2c5364 45%, #b8873a 100%); }
+  /* Capa oscura simple (gradiente + opacidad) para legibilidad del
+     texto, sin depender de mix-blend-mode. */
+  .carousel-overlay{
+    position:absolute; inset:0;
+    background: linear-gradient(180deg, rgba(11,12,14,0) 22%, rgba(11,12,14,.55) 62%, rgba(11,12,14,.94) 100%);
+    pointer-events:none;
+  }
 
   .carousel-icon{
     position:absolute;
     top: 16px; right:16px;
-    z-index:1;
-    font-size: 32px;
-    opacity:.4;
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,.5));
+    z-index:2;
+    font-size: 30px;
+    opacity:.9;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,.6));
   }
 
   .carousel-copy{
@@ -751,7 +762,8 @@
   .no-results strong{ display:block; color: var(--text); font-size:16px; margin-bottom:6px; }
 
   /* ============================================================
-     SEEDS
+     SEEDS (estilos conservados por si se reutilizan en otras
+     páginas del sitio, aunque la sección ya no vive en index.html)
      ============================================================ */
   .seed-grid{
     display:grid;
@@ -854,7 +866,8 @@
   .toast .dot{ width:8px; height:8px; background: var(--moss); border-radius:2px; }
 
   /* ============================================================
-     CTA STRIP
+     CTA STRIP (estilo conservado; el bloque que lo usaba se
+     eliminó de index.html, pero la clase queda disponible)
      ============================================================ */
   .cta-strip{
     background: linear-gradient(120deg, rgba(74,222,128,.1), rgba(232,177,77,.06));
@@ -996,8 +1009,9 @@
         <div class="carousel-track" id="carouselTrack">
 
           <div class="carousel-slide is-active" data-slide="0">
-            <div class="carousel-bg slide-bg-1"></div>
-            <span class="carousel-icon">🌱</span>
+            <img class="carousel-slide-img" alt="Bosque frondoso con terreno variado" loading="eager" src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?q=80&w=1200&auto=format&fit=crop">
+            <div class="carousel-overlay"></div>
+            <span class="carousel-icon">✨</span>
             <div class="carousel-copy">
               <span class="carousel-kicker">Nuevas semillas disponibles</span>
               <p>Descubre nuevos mundos para Minecraft Bedrock v26.</p>
@@ -1005,8 +1019,9 @@
           </div>
 
           <div class="carousel-slide" data-slide="1">
-            <div class="carousel-bg slide-bg-2"></div>
-            <span class="carousel-icon">⛰️</span>
+            <img class="carousel-slide-img" alt="Paisaje de montañas y naturaleza" loading="lazy" src="https://images.unsplash.com/photo-1607513746994-51f730a44832?q=80&w=1200&auto=format&fit=crop">
+            <div class="carousel-overlay"></div>
+            <span class="carousel-icon">🔥</span>
             <div class="carousel-copy">
               <span class="carousel-kicker">Semillas destacadas</span>
               <p>Encuentra mundos increíbles para tu próxima aventura.</p>
@@ -1014,8 +1029,9 @@
           </div>
 
           <div class="carousel-slide" data-slide="2">
-            <div class="carousel-bg slide-bg-3"></div>
-            <span class="carousel-icon">🗺️</span>
+            <img class="carousel-slide-img" alt="Cueva con estructuras y antorchas" loading="lazy" src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=1200&auto=format&fit=crop">
+            <div class="carousel-overlay"></div>
+            <span class="carousel-icon">🌍</span>
             <div class="carousel-copy">
               <span class="carousel-kicker">Explora nuevos mundos</span>
               <p>Descubre biomas, aldeas, estructuras y mucho más.</p>
@@ -1023,8 +1039,9 @@
           </div>
 
           <div class="carousel-slide" data-slide="3">
-            <div class="carousel-bg slide-bg-4"></div>
-            <span class="carousel-icon">🧊</span>
+            <img class="carousel-slide-img" alt="Escena moderna con luces" loading="lazy" src="https://images.unsplash.com/photo-1614854262340-ab1ca7d079c7?q=80&w=1200&auto=format&fit=crop">
+            <div class="carousel-overlay"></div>
+            <span class="carousel-icon">⚡</span>
             <div class="carousel-copy">
               <span class="carousel-kicker">Actualizado</span>
               <p>Semillas compatibles con Minecraft Bedrock v26.</p>
@@ -1032,8 +1049,9 @@
           </div>
 
           <div class="carousel-slide" data-slide="4">
-            <div class="carousel-bg slide-bg-5"></div>
-            <span class="carousel-icon">🌇</span>
+            <img class="carousel-slide-img" alt="Aventurero listo para explorar" loading="lazy" src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1200&auto=format&fit=crop">
+            <div class="carousel-overlay"></div>
+            <span class="carousel-icon">🌱</span>
             <div class="carousel-copy">
               <span class="carousel-kicker">Empieza tu aventura</span>
               <p>Encuentra el mundo perfecto para comenzar.</p>
@@ -1041,8 +1059,9 @@
           </div>
 
           <div class="carousel-slide" data-slide="5">
-            <div class="carousel-bg slide-bg-6"></div>
-            <span class="carousel-icon">🧭</span>
+            <img class="carousel-slide-img" alt="Escena nocturna con luces intensas" loading="lazy" src="https://images.unsplash.com/photo-1633613286991-611fe299c4be?q=80&w=1200&auto=format&fit=crop">
+            <div class="carousel-overlay"></div>
+            <span class="carousel-icon">💎</span>
             <div class="carousel-copy">
               <span class="carousel-kicker">Encuentra el mundo perfecto</span>
               <p>Descubre semillas seleccionadas para diferentes estilos de juego.</p>
@@ -1050,7 +1069,8 @@
           </div>
 
           <div class="carousel-slide" data-slide="6">
-            <div class="carousel-bg slide-bg-7"></div>
+            <img class="carousel-slide-img" alt="Paisaje espectacular con luz brillante" loading="lazy" src="https://images.unsplash.com/photo-1642184749291-4318e70eb4c1?q=80&w=1200&auto=format&fit=crop">
+            <div class="carousel-overlay"></div>
             <span class="carousel-icon">🏔️</span>
             <div class="carousel-copy">
               <span class="carousel-kicker">Descubre paisajes increíbles</span>
@@ -1059,8 +1079,9 @@
           </div>
 
           <div class="carousel-slide" data-slide="7">
-            <div class="carousel-bg slide-bg-8"></div>
-            <span class="carousel-icon">🌅</span>
+            <img class="carousel-slide-img" alt="Bosque para explorar" loading="lazy" src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?q=80&w=1200&auto=format&fit=crop">
+            <div class="carousel-overlay"></div>
+            <span class="carousel-icon">🧭</span>
             <div class="carousel-copy">
               <span class="carousel-kicker">Explora. Descubre. Sobrevive.</span>
               <p>Tu próxima aventura comienza aquí.</p>
@@ -1068,8 +1089,9 @@
           </div>
 
           <div class="carousel-slide" data-slide="8">
-            <div class="carousel-bg slide-bg-9"></div>
-            <span class="carousel-icon">🏘️</span>
+            <img class="carousel-slide-img" alt="Paisaje popular entre la comunidad" loading="lazy" src="https://images.unsplash.com/photo-1607513746994-51f730a44832?q=80&w=1200&auto=format&fit=crop">
+            <div class="carousel-overlay"></div>
+            <span class="carousel-icon">⭐</span>
             <div class="carousel-copy">
               <span class="carousel-kicker">Semillas populares</span>
               <p>Descubre las semillas favoritas de la comunidad.</p>
@@ -1077,8 +1099,9 @@
           </div>
 
           <div class="carousel-slide" data-slide="9">
-            <div class="carousel-bg slide-bg-10"></div>
-            <span class="carousel-icon">⛏️</span>
+            <img class="carousel-slide-img" alt="Estructura y paisaje épico" loading="lazy" src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=1200&auto=format&fit=crop">
+            <div class="carousel-overlay"></div>
+            <span class="carousel-icon">🗺️</span>
             <div class="carousel-copy">
               <span class="carousel-kicker">Tu próximo mundo empieza aquí</span>
               <p>Explora nuestra colección de semillas.</p>
@@ -1283,130 +1306,6 @@
 </section>
 
 <!-- ============================================================
-     SEMILLAS
-     ============================================================ -->
-<section id="semillas">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div>
-        <span class="tag">🌱 Semillas populares</span>
-        <h2>Semillas verificadas por la comunidad</h2>
-        <p>Copia la seed con un clic y genera el mundo exacto que ves en cada tarjeta.</p>
-      </div>
-    </div>
-
-    <div class="seed-grid">
-      <div class="seed-card reveal">
-        <div class="seed-top">
-          <h3>Biomas Variados</h3>
-          <span class="seed-version">v26</span>
-        </div>
-        <div class="seed-meta">
-          <div><span>Ideal para</span><span>Supervivencia</span></div>
-          <div><span>Descripción</span><span>Gran variedad de biomas, aldea cercana y stronghold reportada.</span></div>
-        </div>
-        <div class="seed-code">
-          <span>-4995054936707021313</span>
-          <button class="copy-btn" data-seed="-4995054936707021313">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            Copiar
-          </button>
-        </div>
-      </div>
-
-      <div class="seed-card reveal">
-        <div class="seed-top">
-          <h3>Aldea al Spawn</h3>
-          <span class="seed-version">v26</span>
-        </div>
-        <div class="seed-meta">
-          <div><span>Ideal para</span><span>Empezar rápido</span></div>
-          <div><span>Descripción</span><span>Aldea cerca del spawn, perfecta para supervivencia.</span></div>
-        </div>
-        <div class="seed-code">
-          <span>8074986196338038296</span>
-          <button class="copy-btn" data-seed="8074986196338038296">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            Copiar
-          </button>
-        </div>
-      </div>
-
-      <div class="seed-card reveal">
-        <div class="seed-top">
-          <h3>Montañas de Cerezos</h3>
-          <span class="seed-version">v26</span>
-        </div>
-        <div class="seed-meta">
-          <div><span>Ideal para</span><span>Construcción</span></div>
-          <div><span>Descripción</span><span>Montañas con cerezos y paisajes espectaculares.</span></div>
-        </div>
-        <div class="seed-code">
-          <span>5313654000673944644</span>
-          <button class="copy-btn" data-seed="5313654000673944644">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            Copiar
-          </button>
-        </div>
-      </div>
-
-      <div class="seed-card reveal">
-        <div class="seed-top">
-          <h3>Aldea Zombi y Trial Chambers</h3>
-          <span class="seed-version">v26</span>
-        </div>
-        <div class="seed-meta">
-          <div><span>Ideal para</span><span>Exploración</span></div>
-          <div><span>Descripción</span><span>Aldea zombi, portal en ruinas y Trial Chambers cercanas.</span></div>
-        </div>
-        <div class="seed-code">
-          <span>618942075558609331</span>
-          <button class="copy-btn" data-seed="618942075558609331">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            Copiar
-          </button>
-        </div>
-      </div>
-
-      <div class="seed-card reveal">
-        <div class="seed-top">
-          <h3>Portal y Trial Chamber</h3>
-          <span class="seed-version">v26</span>
-        </div>
-        <div class="seed-meta">
-          <div><span>Ideal para</span><span>Principiantes</span></div>
-          <div><span>Descripción</span><span>Aldea, portal en ruinas y Trial Chamber relativamente cerca.</span></div>
-        </div>
-        <div class="seed-code">
-          <span>-7417157268905316998</span>
-          <button class="copy-btn" data-seed="-7417157268905316998">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            Copiar
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     CTA / ENCANTAMIENTOS + COMANDOS ANCHOR SECTION
-     ============================================================ -->
-<section id="encantamientos" class="section-alt">
-  <div class="wrap">
-    <div class="cta-strip reveal">
-      <span class="tag" style="margin-bottom:0;">⚔️ Encantamientos · ⌨️ Comandos</span>
-      <h2>¿Buscas encantamientos o comandos específicos?</h2>
-      <p>Explora nuestra base completa de encantamientos por objeto y nuestra lista de comandos con ejemplos listos para pegar en tu mundo.</p>
-      <div class="hero-actions" style="margin-top:4px;">
-        <a href="#guias" class="btn btn-primary">Ver encantamientos</a>
-        <a href="#guias" id="comandos" class="btn btn-secondary">Ver comandos</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
      FOOTER
      ============================================================ -->
 <footer>
@@ -1454,6 +1353,54 @@
 (function(){
   "use strict";
 
+  /* ============================================================
+     IMÁGENES DEL CARRUSEL — cambia aquí las 10 rutas
+     ------------------------------------------------------------
+     Este array es el único lugar que necesitas tocar para
+     reemplazar las imágenes del carrusel. El orden corresponde
+     exactamente a las 10 diapositivas (1 a 10) tal como aparecen
+     en el HTML. Pon aquí la URL o ruta de tu propia imagen y se
+     aplicará automáticamente a esa diapositiva.
+     ============================================================ */
+  const CAROUSEL_IMAGES = [
+    'https://images.unsplash.com/photo-1518709268805-4e9042af2176?q=80&w=1200&auto=format&fit=crop', // 1. Nuevas semillas disponibles
+    'https://images.unsplash.com/photo-1607513746994-51f730a44832?q=80&w=1200&auto=format&fit=crop', // 2. Semillas destacadas
+    'https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=1200&auto=format&fit=crop', // 3. Explora nuevos mundos
+    'https://images.unsplash.com/photo-1614854262340-ab1ca7d079c7?q=80&w=1200&auto=format&fit=crop', // 4. Actualizado
+    'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1200&auto=format&fit=crop', // 5. Empieza tu aventura
+    'https://images.unsplash.com/photo-1633613286991-611fe299c4be?q=80&w=1200&auto=format&fit=crop', // 6. Encuentra el mundo perfecto
+    'https://images.unsplash.com/photo-1642184749291-4318e70eb4c1?q=80&w=1200&auto=format&fit=crop', // 7. Descubre paisajes increíbles
+    'https://images.unsplash.com/photo-1518709268805-4e9042af2176?q=80&w=1200&auto=format&fit=crop', // 8. Explora. Descubre. Sobrevive.
+    'https://images.unsplash.com/photo-1607513746994-51f730a44832?q=80&w=1200&auto=format&fit=crop', // 9. Semillas populares
+    'https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=1200&auto=format&fit=crop'  // 10. Tu próximo mundo empieza aquí
+  ];
+
+  /* Red de seguridad adicional para el scroll (la causa raíz ya
+     se corrige en el <script> del <head>, antes de que exista el
+     elemento destino). */
+  if (window.location.hash) {
+    window.history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
+  window.scrollTo(0, 0);
+
+  /* Los enlaces internos (#inicio, #guias, etc.) hacen scroll
+     suave por JavaScript en vez de dejar que el navegador cambie
+     la URL con el hash — así nunca queda un enlace "pegado" a una
+     sección al copiar la URL. Si el enlace no tiene un destino
+     válido en esta página (por ejemplo una sección que ya no
+     existe), no se hace nada y tampoco se ensucia la URL. */
+  document.addEventListener('click', function(e){
+    var link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    var href = link.getAttribute('href');
+    if (!href || href.length < 2) return;
+    var target;
+    try { target = document.querySelector(href); } catch (err) { return; }
+    e.preventDefault();
+    if (!target) return;
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
   /* ---------- Hero carousel (banner de semillas/mundos) ---------- */
   const heroCarousel = document.getElementById('heroCarousel');
   if (heroCarousel) {
@@ -1467,6 +1414,14 @@
     let autoplayTimer = null;
     const AUTOPLAY_MS = 4000;
     const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Aplica las imágenes del array CAROUSEL_IMAGES a cada diapositiva.
+    slides.forEach((slide, i) => {
+      const img = slide.querySelector('.carousel-slide-img');
+      if (img && CAROUSEL_IMAGES[i]) {
+        img.src = CAROUSEL_IMAGES[i];
+      }
+    });
 
     function goToSlide(index){
       const nextIndex = (index + total) % total;
@@ -1571,7 +1526,8 @@
     filterArticles(articleSearchInput.value);
   });
 
-  /* ---------- Copy seed to clipboard ---------- */
+  /* ---------- Copy seed to clipboard (por si alguna tarjeta de
+     semilla se conserva en otra parte de la página) ---------- */
   const toast = document.getElementById('toast');
   const toastText = document.getElementById('toastText');
   let toastTimer;
@@ -1633,8 +1589,10 @@
     revealEls.forEach(el => el.classList.add('in'));
   }
 
-  /* ---------- Active nav link on scroll ---------- */
-  const sections = ['inicio', 'semillas', 'guias', 'encantamientos'].map(id => document.getElementById(id)).filter(Boolean);
+  /* ---------- Active nav link on scroll ----------
+     Solo se observan las secciones que existen realmente en esta
+     página (las de Semillas y Encantamientos se eliminaron). */
+  const sections = ['inicio', 'guias'].map(id => document.getElementById(id)).filter(Boolean);
   const navLinks = document.querySelectorAll('.nav-links a');
   if ('IntersectionObserver' in window && sections.length) {
     const navIo = new IntersectionObserver((entries) => {
